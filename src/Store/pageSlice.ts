@@ -5,11 +5,13 @@ const initialState: {
   totalPages: number;
   totalResults: number;
   loading: boolean;
+  error: null | string | unknown;
 } = {
   page: 1,
   totalPages: 1,
   totalResults: 0,
   loading: true,
+  error: null,
 };
 
 const pageSlice = createSlice({
@@ -34,6 +36,9 @@ const pageSlice = createSlice({
     setLoading: (state, action: PayloadAction<boolean>) => {
       state.loading = action.payload;
     },
+    setError: (state, action: PayloadAction<string | unknown | null>) => {
+      state.error = action.payload;
+    },
   },
 });
 
@@ -44,6 +49,7 @@ export const {
   setTotalPages,
   setTotalResults,
   setLoading,
+  setError,
 } = pageSlice.actions;
 
 export default pageSlice;

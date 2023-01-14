@@ -1,29 +1,24 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setColor } from '../Store/colorSlice';
+import { removeAllFavorites } from '../Store/playersSlice';
 import { RootState } from '../Store/store';
 import Player from './Player';
 
-type Props = {
-  favoritePlayers: any[];
-  removePlayerFromFavorites: (id: number) => void;
-  removeAllFavorites: () => void;
-};
-
-const FavoritePlayers = ({
-  favoritePlayers,
-  removePlayerFromFavorites,
-  removeAllFavorites,
-}: Props) => {
-  // const [color, setColor] = useState<string>('');
-  const color = useSelector((state: RootState) => state.colorSet.color);
+const FavoritePlayers = () => {
   const dispatch = useDispatch();
+
+  const color = useSelector((state: RootState) => state.colorSet.color);
+  const favPlayers = useSelector(
+    (state: RootState) => state.playersSet.favPlayers
+  );
+
   return (
     <div className='fav-players' style={{ backgroundColor: color }}>
       <div className='fav-players-info'>
         <h1>fav</h1>
         <label htmlFor='background-color'>
-          change background colol for this section:{' '}
+          change background color for this section only:{' '}
         </label>
         <input
           value={color}
@@ -34,20 +29,14 @@ const FavoritePlayers = ({
           onChange={(e) => dispatch(setColor(e.target.value))}
         />
         <div>
-          <button onClick={() => removeAllFavorites()}>remove all favs</button>
+          <button onClick={() => dispatch(removeAllFavorites())}>
+            remove all favs
+          </button>
         </div>
       </div>
       <ul className='fav-players-list'>
-        {favoritePlayers.map((player) => {
-          return (
-            <Player
-              action={removePlayerFromFavorites}
-              removePlayerFromFavorites={removePlayerFromFavorites}
-              favorite={player.fav}
-              key={player.id}
-              player={player}
-            ></Player>
-          );
+        {favPlayers.map((player) => {
+          return <Player key={player.id} player={player}></Player>;
         })}
       </ul>
     </div>

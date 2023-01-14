@@ -5,28 +5,26 @@ import { pageDecrement, pageIncrement, setPage } from '../Store/pageSlice';
 import { RootState } from '../Store/store';
 import Player from './Player';
 
-type Props = {
-  players: any[];
-  addPlayerToFavorites: (id: number) => void;
-  removePlayerFromFavorites: (id: number) => void;
-};
+// type Props = {
+//   addPlayerToFavorites: (id: number) => void;
+//   removePlayerFromFavorites: (id: number) => void;
+// };
 
-const AllPlayers = ({
-  players,
-  addPlayerToFavorites,
-  removePlayerFromFavorites,
-}: Props) => {
+const AllPlayers = () => {
+  const dispatch = useDispatch();
+
   const page = useSelector((state: RootState) => state.pageSet.page);
+  const error = useSelector((state: RootState) => state.pageSet.error);
   const loading = useSelector((state: RootState) => state.pageSet.loading);
   const query = useSelector((state: RootState) => state.filterSet.query);
-
-  const dispatch = useDispatch();
+  const players = useSelector((state: RootState) => state.playersSet.players);
   const totalPages = useSelector(
     (state: RootState) => state.pageSet.totalPages
   );
   const totalResults = useSelector(
     (state: RootState) => state.pageSet.totalPages
   );
+
   return (
     <div className='all-players'>
       <div className='all-players-info'>
@@ -69,7 +67,6 @@ const AllPlayers = ({
               onClick={() => {
                 if (page === 1) return;
                 dispatch(pageDecrement());
-                // setPage((prev: number) => prev - 1);
               }}
             >
               prev page
@@ -81,8 +78,6 @@ const AllPlayers = ({
               onClick={() => {
                 if (page === totalPages) return;
                 dispatch(pageIncrement());
-
-                // setPage((prev: number) => prev + 1);
               }}
             >
               next page
@@ -91,17 +86,21 @@ const AllPlayers = ({
         </div>
       </div>
       <ul className='all-players-list'>
+        {error ? (
+          <h2>
+            error: slow down, too many requests, wait 10 seconds and retry
+          </h2>
+        ) : null}
         {loading ? (
           <p>loading...</p>
         ) : (
+          !error &&
           players.map((player) => {
             return (
               <Player
-                favorite={player.fav}
                 key={player.id}
                 player={player}
-                action={addPlayerToFavorites}
-                removePlayerFromFavorites={removePlayerFromFavorites}
+                // removePlayerFromFavorites={removePlayerFromFavorites}
               ></Player>
             );
           })
