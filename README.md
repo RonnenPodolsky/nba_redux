@@ -2,7 +2,7 @@
 
 ## API DOCUMENTATION
 
-[Balldontlie](https://www.balldontlie.io/api/v1/players).
+[Balldontlie](https://www.balldontlie.io).
 
 ## API Json
 
