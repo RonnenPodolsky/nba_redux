@@ -42,6 +42,7 @@ const App: React.FC = () => {
     const data = await fetch(`${url}?search=${query}&per_page=12&page=${page}`);
     const jsonPlayers = await data.json();
     let currPlayers = jsonPlayers.data;
+    console.log(currPlayers);
     // for each favorite player if it's in the current results rendered, add a the fav property to show render correctly
     favoritePlayers.forEach((favPlayer) => {
       let currentPlayer = currPlayers.find(
@@ -59,7 +60,15 @@ const App: React.FC = () => {
   }, [query, page, favoritePlayers, dispatch, url]);
 
   useEffect(() => {
-    getPlayers();
+    let subscribed = true;
+    queueMicrotask(() => {
+      if (subscribed) {
+        getPlayers();
+      }
+    });
+    return () => {
+      subscribed = false;
+    };
   }, [getPlayers]);
 
   return (
