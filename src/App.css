@@ -1,0 +1,37 @@
+.App {
+  text-align: center;
+}
+
+.App li {
+  list-style: none;
+}
+
+.App .sections {
+  display: flex;
+  gap: 1rem;
+}
+
+.App .sections>div {
+  width: 48%;
+}
+
+.App .sections ul {
+  padding: 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+.App .sections .all-players {
+  border-right: 5px solid black;
+}
+
+.App .btn {
+  margin: 0.2rem;
+}
+
+.player-card {
+  box-shadow: rgba(0, 0, 0, 0.13) 0px 5px 15px;
+  width: 7.5rem;
+  padding: 1.5rem;
+}
