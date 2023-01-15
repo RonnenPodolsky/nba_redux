@@ -24,12 +24,12 @@ const App: React.FC = () => {
 
   const getPlayers = useCallback(async () => {
     try {
-      const data = await fetch(
+      const response = await fetch(
         `${url}?search=${query}&per_page=12&page=${page}`
       );
-      if (!data.ok) throw new Error(data.statusText);
-      const jsonPlayers = await data.json();
-      let currPlayers = jsonPlayers.data;
+      if (!response.ok) throw new Error(response.statusText);
+      const data = await response.json();
+      let currPlayers = data.data;
       // for each favorite player if it's in the current results rendered, add a the fav property to show render correctly
       favoritePlayers.forEach((favPlayer) => {
         let currentPlayer = currPlayers.find(
@@ -40,8 +40,8 @@ const App: React.FC = () => {
         }
       });
       dispatch(setPlayers(currPlayers));
-      dispatch(setTotalPages(jsonPlayers.meta.total_pages));
-      dispatch(setTotalResults(jsonPlayers.meta.total_count));
+      dispatch(setTotalPages(data.meta.total_pages));
+      dispatch(setTotalResults(data.meta.total_count));
       dispatch(setLoading(false));
       dispatch(setError(null));
     } catch (e) {
@@ -67,8 +67,8 @@ const App: React.FC = () => {
     <div className='App'>
       <h1>Favorite NBA Players</h1>
       <div className='sections'>
-        <AllPlayers></AllPlayers>
-        <FavoritePlayers></FavoritePlayers>
+        <AllPlayers />
+        <FavoritePlayers />
       </div>
     </div>
   );

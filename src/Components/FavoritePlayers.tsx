@@ -7,11 +7,8 @@ import Player from './Player';
 
 const FavoritePlayers = () => {
   const dispatch = useDispatch();
-
-  const color = useSelector((state: RootState) => state.colorSet.color);
-  const favPlayers = useSelector(
-    (state: RootState) => state.playersSet.favPlayers
-  );
+  const { color } = useSelector((state: RootState) => state.colorSet);
+  const { favPlayers } = useSelector((state: RootState) => state.playersSet);
 
   return (
     <div className='fav-players' style={{ backgroundColor: color }}>
@@ -36,7 +33,7 @@ const FavoritePlayers = () => {
       </div>
       <ul className='fav-players-list'>
         {favPlayers.map((player) => {
-          return <Player key={player.id} player={player}></Player>;
+          return <Player key={player.id} player={player} />;
         })}
       </ul>
     </div>

@@ -5,25 +5,13 @@ import { pageDecrement, pageIncrement, setPage } from '../Store/pageSlice';
 import { RootState } from '../Store/store';
 import Player from './Player';
 
-// type Props = {
-//   addPlayerToFavorites: (id: number) => void;
-//   removePlayerFromFavorites: (id: number) => void;
-// };
-
 const AllPlayers = () => {
   const dispatch = useDispatch();
-
-  const page = useSelector((state: RootState) => state.pageSet.page);
-  const error = useSelector((state: RootState) => state.pageSet.error);
-  const loading = useSelector((state: RootState) => state.pageSet.loading);
-  const query = useSelector((state: RootState) => state.filterSet.query);
-  const players = useSelector((state: RootState) => state.playersSet.players);
-  const totalPages = useSelector(
-    (state: RootState) => state.pageSet.totalPages
+  const { page, error, loading, totalPages, totalResults } = useSelector(
+    (state: RootState) => state.pageSet
   );
-  const totalResults = useSelector(
-    (state: RootState) => state.pageSet.totalPages
-  );
+  const { query } = useSelector((state: RootState) => state.filterSet);
+  const { players } = useSelector((state: RootState) => state.playersSet);
 
   return (
     <div className='all-players'>
@@ -53,6 +41,7 @@ const AllPlayers = () => {
         <div>
           {`total results: ${totalResults}`}
           <button
+            disabled={page === 1}
             className='btn'
             onClick={() => {
               dispatch(setPage(1));
@@ -63,9 +52,9 @@ const AllPlayers = () => {
 
           <div>
             <button
+              disabled={page === 1}
               className='btn'
               onClick={() => {
-                if (page === 1) return;
                 dispatch(pageDecrement());
               }}
             >
@@ -74,9 +63,9 @@ const AllPlayers = () => {
             {`page: ${totalPages === 0 ? 0 : page} / ${totalPages}`}
 
             <button
+              disabled={page === totalPages}
               className='btn'
               onClick={() => {
-                if (page === totalPages) return;
                 dispatch(pageIncrement());
               }}
             >
@@ -96,13 +85,7 @@ const AllPlayers = () => {
         ) : (
           !error &&
           players.map((player) => {
-            return (
-              <Player
-                key={player.id}
-                player={player}
-                // removePlayerFromFavorites={removePlayerFromFavorites}
-              ></Player>
-            );
+            return <Player key={player.id} player={player} />;
           })
         )}
       </ul>
